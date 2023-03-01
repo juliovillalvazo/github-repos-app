@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import Constants from 'expo-constants';
 import AppBarTab from './AppBarTab';
 import { useQuery } from '@apollo/client';
-import { ME } from '../gql/queries';
+import { ME } from '../../gql/queries';
 
 const styles = StyleSheet.create({
     container: {

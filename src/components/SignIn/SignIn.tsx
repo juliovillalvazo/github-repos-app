@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import SignInForm from './SignInForm';
 import useSignIn from '../../hooks/useSignIn';
-import { AuthenticateInput } from '../../types';
+import { AuthenticateInput, SignInContainerProps } from '../../types';
 import Text from '../UI/Text';
 import { View, StyleSheet } from 'react-native';
 import { useNavigate } from 'react-router-native';
@@ -34,8 +34,27 @@ const validationSchema = yup.object().shape({
     password: yup
         .string()
         .min(8, 'password must be at least 8 characters long')
-        .required('Password is required'),
+        .required('password is required'),
 });
+
+export const SignInContainer = ({ onSubmit, error }: SignInContainerProps) => {
+    return (
+        <View testID='SignInContainer'>
+            <Formik
+                initialValues={initialValues}
+                onSubmit={onSubmit}
+                validationSchema={validationSchema}
+            >
+                {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
+            </Formik>
+            {error && (
+                <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>{error.message}</Text>
+                </View>
+            )}
+        </View>
+    );
+};
 
 const SignIn = () => {
     const [signIn, status] = useSignIn();
@@ -56,20 +75,10 @@ const SignIn = () => {
     };
 
     return (
-        <View>
-            <Formik
-                initialValues={initialValues}
-                onSubmit={onSubmit}
-                validationSchema={validationSchema}
-            >
-                {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
-            </Formik>
-            {status.error && (
-                <View style={styles.errorContainer}>
-                    <Text style={styles.errorText}>{status.error.message}</Text>
-                </View>
-            )}
-        </View>
+        <SignInContainer
+            onSubmit={onSubmit}
+            error={status.error ? status.error : undefined}
+        />
     );
 };
 

@@ -15,9 +15,7 @@ const renderItem = ({ item }: { item: Item }) => {
     return <RepositoryItem {...item} />;
 };
 
-const RepositoryList = () => {
-    const { repositories } = useRepositories();
-
+export const RepositoryListContainer = ({ repositories }: any) => {
     const repositoryNodes: Item[] =
         repositories !== undefined
             ? repositories.edges.map((edge: any) => edge.node)
@@ -31,6 +29,11 @@ const RepositoryList = () => {
             // other props
         />
     );
+};
+const RepositoryList = () => {
+    const { repositories } = useRepositories();
+
+    return <RepositoryListContainer repositories={repositories} />;
 };
 
 export default RepositoryList;

@@ -1,3 +1,5 @@
+import { ApolloError } from '@apollo/client';
+
 export interface Item {
     id?: string;
     fullName: string;
@@ -13,15 +15,20 @@ export interface Item {
 export interface RepositoryResult {
     totalCount: number;
     pageInfo: {
-        [key: string]: number | boolean | string,
+        [key: string]: number | boolean | string;
     };
     edges: {
-        node: Item,
-        cursor: string,
+        node: Item;
+        cursor: string;
     }[];
 }
 
 export interface AuthenticateInput {
     username: string;
     password: string;
+}
+
+export interface SignInContainerProps {
+    error?: ApolloError | undefined;
+    onSubmit: (values: AuthenticateInput) => Promise<void>;
 }

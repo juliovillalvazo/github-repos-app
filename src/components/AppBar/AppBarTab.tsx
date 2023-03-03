@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet } from 'react-native';
 import { useNavigate } from 'react-router-native';
-import Text from './UI/Text';
+import Text from '../UI/Text';
 import { useApolloClient } from '@apollo/client';
-import { useAuthStorage } from '../hooks/useAuthStorage';
+import { useAuthStorage } from '../../hooks/useAuthStorage';
 
 interface Props {
     label: string;

@@ -12,6 +12,16 @@ export interface Item {
     ownerAvatarUrl: string;
 }
 
+export interface SingleRepository extends Item {
+    ownerName?: string;
+    name?: string;
+    createdAt?: Date;
+    watchersCount?: number;
+    openIssuesCount?: number;
+    url?: string;
+    userHasReviewed?: boolean;
+}
+
 export interface RepositoryResult {
     totalCount: number;
     pageInfo: {

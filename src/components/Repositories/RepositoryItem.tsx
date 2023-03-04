@@ -1,9 +1,10 @@
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Pressable, Button } from 'react-native';
 import theme from '../../theme';
-import { Item } from '../../types';
-import Text from '../UI/Text';
+import { SingleRepository } from '../../types';
 import RepositoryItemInfo from './RepositoryItemInfo';
 import RepositoryItemStats from './RepositoryItemStats';
+import { useNavigate } from 'react-router-native';
+import { openURL } from 'expo-linking';
 
 const styles = StyleSheet.create({
     container: {
@@ -32,7 +33,57 @@ const styles = StyleSheet.create({
     },
 });
 
+export const RepositoryItemContainer = ({
+    data,
+}: {
+    data: SingleRepository;
+}) => {
+    const navigate = useNavigate();
+    const onPressHandler = async () => {
+        try {
+            if (data.url) await openURL(data.url);
+            else throw new Error('No url provided');
+        } catch (e) {
+            console.log(e);
+        }
+    };
+    return (
+        <Pressable onPress={() => navigate(`/repositories/${data.id}`)}>
+            <View testID='repositoryItem' style={styles.container}>
+                <View style={styles.displayFlexRow}>
+                    <View style={styles.rightMargin}>
+                        <Image
+                            style={[styles.smallImage, styles.borderRadio]}
+                            source={{ uri: data.ownerAvatarUrl }}
+                        />
+                    </View>
+                    <RepositoryItemInfo
+                        fullName={data.fullName}
+                        description={data.description}
+                        language={data.language}
+                    />
+                </View>
+                <RepositoryItemStats
+                    stargazersCount={data.stargazersCount}
+                    forksCount={data.forksCount}
+                    reviewCount={data.reviewCount}
+                    ratingAverage={data.ratingAverage}
+                />
+                {data.url && (
+                    <View>
+                        <Button
+                            onPress={onPressHandler}
+                            title='Open in Github'
+                        ></Button>
+                    </View>
+                )}
+            </View>
+        </Pressable>
+    );
+};
+
 const RepositoryItem = ({
+    id,
     fullName,
     description,
     language,
@@ -41,29 +92,26 @@ const RepositoryItem = ({
     ratingAverage,
     reviewCount,
     ownerAvatarUrl,
-}: Item) => {
+    url,
+}: SingleRepository) => {
+    const navigate = useNavigate();
     return (
-        <View testID='repositoryItem' style={styles.container}>
-            <View style={styles.displayFlexRow}>
-                <View style={styles.rightMargin}>
-                    <Image
-                        style={[styles.smallImage, styles.borderRadio]}
-                        source={{ uri: ownerAvatarUrl }}
-                    />
-                </View>
-                <RepositoryItemInfo
-                    fullName={fullName}
-                    description={description}
-                    language={language}
-                />
-            </View>
-            <RepositoryItemStats
-                stargazersCount={stargazersCount}
-                forksCount={forksCount}
-                reviewCount={reviewCount}
-                ratingAverage={ratingAverage}
+        <Pressable onPress={() => navigate(`/repositories/${id}`)}>
+            <RepositoryItemContainer
+                data={{
+                    id,
+                    fullName,
+                    description,
+                    language,
+                    forksCount,
+                    stargazersCount,
+                    ratingAverage,
+                    reviewCount,
+                    ownerAvatarUrl,
+                    url,
+                }}
             />
-        </View>
+        </Pressable>
     );
 };
 

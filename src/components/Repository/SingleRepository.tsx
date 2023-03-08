@@ -1,9 +1,10 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { useParams } from 'react-router-native';
 import useSingleRepository from '../../hooks/useSingleRepository';
 import { RepositoryItemContainer } from '../Repositories/RepositoryItem';
 import Text from '../UI/Text';
 import theme from '../../theme';
+import { ReviewProps } from '../../types';
 
 const styles = StyleSheet.create({
     errorText: {
@@ -11,6 +12,22 @@ const styles = StyleSheet.create({
         color: theme.colors.red,
     },
 });
+
+const ReviewItem = ({
+    review,
+}: { review: ReviewProps } | { review: undefined }) => {
+    if (!review) return <></>;
+    return (
+        <View>
+            <Text>{`${review.createdAt}`}</Text>
+            <Text>{`${review.id}`}</Text>
+            <Text>{`${review.rating}`}</Text>
+            <Text>{`${review.text}`}</Text>
+            <Text>{`${review.user.id}`}</Text>
+            <Text>{`${review.user.username}`}</Text>
+        </View>
+    );
+};
 
 const SingleRepository = () => {
     const { id } = useParams();
@@ -33,7 +50,20 @@ const SingleRepository = () => {
         );
     }
 
-    return <RepositoryItemContainer data={repository} />;
+    const reviews: ReviewProps[] | undefined = repository.reviews?.edges.map(
+        (edge) => edge.node,
+    );
+
+    return (
+        <FlatList
+            data={reviews}
+            renderItem={({ item }) => <ReviewItem review={item} />}
+            keyExtractor={({ id }) => id}
+            ListHeaderComponent={() => (
+                <RepositoryItemContainer data={repository} />
+            )}
+        />
+    );
 };
 
 export default SingleRepository;

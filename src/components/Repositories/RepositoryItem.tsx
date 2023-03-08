@@ -1,7 +1,8 @@
-import { View, StyleSheet, Image, Pressable, Button } from 'react-native';
+import { View, StyleSheet, Image, Pressable } from 'react-native';
 import theme from '../../theme';
 import { SingleRepository } from '../../types';
 import RepositoryItemInfo from './RepositoryItemInfo';
+import Text from '../UI/Text';
 import RepositoryItemStats from './RepositoryItemStats';
 import { useNavigate } from 'react-router-native';
 import { openURL } from 'expo-linking';
@@ -31,6 +32,18 @@ const styles = StyleSheet.create({
     rightMargin: {
         marginRight: 10,
     },
+    button: {
+        marginTop: 10,
+        backgroundColor: theme.colors.primary,
+    },
+    textBox: {
+        color: theme.colors.white,
+        minHeight: 60,
+        padding: 20,
+        textAlign: 'center',
+        fontSize: theme.fontSizes.subheading,
+        fontWeight: theme.fontWeights.bold,
+    },
 });
 
 export const RepositoryItemContainer = ({
@@ -38,7 +51,6 @@ export const RepositoryItemContainer = ({
 }: {
     data: SingleRepository;
 }) => {
-    const navigate = useNavigate();
     const onPressHandler = async () => {
         try {
             if (data.url) await openURL(data.url);
@@ -48,37 +60,34 @@ export const RepositoryItemContainer = ({
         }
     };
     return (
-        <Pressable onPress={() => navigate(`/repositories/${data.id}`)}>
-            <View testID='repositoryItem' style={styles.container}>
-                <View style={styles.displayFlexRow}>
-                    <View style={styles.rightMargin}>
-                        <Image
-                            style={[styles.smallImage, styles.borderRadio]}
-                            source={{ uri: data.ownerAvatarUrl }}
-                        />
-                    </View>
-                    <RepositoryItemInfo
-                        fullName={data.fullName}
-                        description={data.description}
-                        language={data.language}
+        <View testID='repositoryItem' style={styles.container}>
+            <View style={styles.displayFlexRow}>
+                <View style={styles.rightMargin}>
+                    <Image
+                        style={[styles.smallImage, styles.borderRadio]}
+                        source={{ uri: data.ownerAvatarUrl }}
                     />
                 </View>
-                <RepositoryItemStats
-                    stargazersCount={data.stargazersCount}
-                    forksCount={data.forksCount}
-                    reviewCount={data.reviewCount}
-                    ratingAverage={data.ratingAverage}
+                <RepositoryItemInfo
+                    fullName={data.fullName}
+                    description={data.description}
+                    language={data.language}
                 />
-                {data.url && (
-                    <View>
-                        <Button
-                            onPress={onPressHandler}
-                            title='Open in Github'
-                        ></Button>
-                    </View>
-                )}
             </View>
-        </Pressable>
+            <RepositoryItemStats
+                stargazersCount={data.stargazersCount}
+                forksCount={data.forksCount}
+                reviewCount={data.reviewCount}
+                ratingAverage={data.ratingAverage}
+            />
+            {data.url && (
+                <Pressable onPress={onPressHandler}>
+                    <View style={[styles.button, styles.borderRadio]}>
+                        <Text style={styles.textBox}>Open in Github</Text>
+                    </View>
+                </Pressable>
+            )}
+        </View>
     );
 };
 

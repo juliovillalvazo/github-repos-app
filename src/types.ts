@@ -20,6 +20,7 @@ export interface SingleRepository extends Item {
     openIssuesCount?: number;
     url?: string;
     userHasReviewed?: boolean;
+    reviews?: ReviewsResult;
 }
 
 export interface RepositoryResult {
@@ -33,6 +34,14 @@ export interface RepositoryResult {
     }[];
 }
 
+export interface ReviewsResult {
+    edges: [
+        {
+            node: ReviewProps;
+        },
+    ];
+}
+
 export interface AuthenticateInput {
     username: string;
     password: string;
@@ -41,4 +50,14 @@ export interface AuthenticateInput {
 export interface SignInContainerProps {
     error?: ApolloError | undefined;
     onSubmit: (values: AuthenticateInput) => Promise<void>;
+}
+
+export interface ReviewProps {
+    createdAt: Date;
+    id: string;
+    rating: number;
+    text: string;
+    user: {
+        [key: string]: string;
+    };
 }

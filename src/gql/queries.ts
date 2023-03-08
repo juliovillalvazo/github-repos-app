@@ -35,6 +35,20 @@ export const GET_REPOSITORY = gql`
             openIssuesCount
             url
             userHasReviewed
+            reviews {
+                edges {
+                    node {
+                        id
+                        text
+                        rating
+                        createdAt
+                        user {
+                            id
+                            username
+                        }
+                    }
+                }
+            }
             ...CoreRepositoryFields
         }
     }

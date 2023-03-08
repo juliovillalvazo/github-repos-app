@@ -17,6 +17,8 @@ const useSingleRepository = (id: string | undefined) => {
         fetchPolicy: 'cache-and-network',
     });
 
+    console.log(data);
+
     return {
         repository: data?.repository,
         loading,

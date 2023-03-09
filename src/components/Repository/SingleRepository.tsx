@@ -7,9 +7,21 @@ import theme from '../../theme';
 import { ReviewProps } from '../../types';
 
 const styles = StyleSheet.create({
+    separator: {
+        height: 15,
+    },
     errorText: {
         marginBottom: 18,
         color: theme.colors.red,
+    },
+    reviewContainer: {
+        backgroundColor: theme.colors.white,
+        padding: '2%',
+        flexDirection: 'row',
+        gap: 20,
+    },
+    textContainer: {
+        maxWidth: '100%',
     },
 });
 
@@ -18,15 +30,21 @@ const ReviewItem = ({
 }: { review: ReviewProps } | { review: undefined }) => {
     if (!review) return <></>;
     return (
-        <View>
-            <Text>{`${review.createdAt}`}</Text>
-            <Text>{`${review.id}`}</Text>
-            <Text>{`${review.rating}`}</Text>
-            <Text>{`${review.text}`}</Text>
-            <Text>{`${review.user.id}`}</Text>
-            <Text>{`${review.user.username}`}</Text>
+        <View style={styles.reviewContainer}>
+            <View style={styles.textContainer}>
+                <Text>{review.rating}</Text>
+            </View>
+            <View style={styles.textContainer}>
+                <Text>{review.user.username}</Text>
+                <Text>{`${review.createdAt}`}</Text>
+                <Text>{review.text}</Text>
+            </View>
         </View>
     );
+};
+
+const ItemSeparator = () => {
+    return <View style={styles.separator} />;
 };
 
 const SingleRepository = () => {
@@ -62,6 +80,7 @@ const SingleRepository = () => {
             ListHeaderComponent={() => (
                 <RepositoryItemContainer data={repository} />
             )}
+            ItemSeparatorComponent={ItemSeparator}
         />
     );
 };

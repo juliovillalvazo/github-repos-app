@@ -10,7 +10,7 @@ import { openURL } from 'expo-linking';
 const styles = StyleSheet.create({
     container: {
         backgroundColor: theme.colors.white,
-        marginBottom: 5,
+        marginBottom: 15,
         padding: '5%',
         width: '100%',
     },

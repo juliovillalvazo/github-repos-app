@@ -5,6 +5,7 @@ import { RepositoryItemContainer } from '../Repositories/RepositoryItem';
 import Text from '../UI/Text';
 import theme from '../../theme';
 import { ReviewProps } from '../../types';
+import { format } from 'date-fns';
 
 const styles = StyleSheet.create({
     separator: {
@@ -18,10 +19,36 @@ const styles = StyleSheet.create({
         backgroundColor: theme.colors.white,
         padding: '2%',
         flexDirection: 'row',
-        gap: 20,
     },
     textContainer: {
-        maxWidth: '100%',
+        paddingRight: '12%',
+    },
+    ratingContainer: {
+        justifyContent: 'flex-start',
+        height: 40,
+        width: 40,
+        marginRight: 10,
+    },
+    ratingBorder: {
+        borderWidth: 1,
+        borderColor: theme.colors.primary,
+        borderRadius: 50,
+    },
+    textRating: {
+        textAlign: 'center',
+        padding: 10,
+    },
+    author: {
+        fontWeight: theme.fontWeights.bold,
+        color: theme.colors.textSecondary,
+    },
+    date: {
+        color: theme.colors.textSecondary,
+        fontSize: theme.fontSizes.body,
+    },
+    description: {
+        color: theme.colors.textSecondary,
+        fontWeight: theme.fontWeights.normal,
     },
 });
 
@@ -29,15 +56,16 @@ const ReviewItem = ({
     review,
 }: { review: ReviewProps } | { review: undefined }) => {
     if (!review) return <></>;
+    const formattedDate = format(new Date(review.createdAt), 'MM.dd.yyyy');
     return (
         <View style={styles.reviewContainer}>
-            <View style={styles.textContainer}>
-                <Text>{review.rating}</Text>
+            <View style={[styles.ratingContainer, styles.ratingBorder]}>
+                <Text style={styles.textRating}>{review.rating}</Text>
             </View>
             <View style={styles.textContainer}>
-                <Text>{review.user.username}</Text>
-                <Text>{`${review.createdAt}`}</Text>
-                <Text>{review.text}</Text>
+                <Text style={styles.author}>{review.user.username}</Text>
+                <Text style={styles.date}>{formattedDate}</Text>
+                <Text style={styles.description}>{review.text}</Text>
             </View>
         </View>
     );

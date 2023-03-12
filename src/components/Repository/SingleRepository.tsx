@@ -24,19 +24,21 @@ const styles = StyleSheet.create({
         paddingRight: '12%',
     },
     ratingContainer: {
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
         height: 40,
         width: 40,
         marginRight: 10,
     },
     ratingBorder: {
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: theme.colors.primary,
         borderRadius: 50,
     },
     textRating: {
         textAlign: 'center',
-        padding: 10,
+        color: theme.colors.primary,
+        fontWeight: theme.fontWeights.bold,
     },
     author: {
         fontWeight: theme.fontWeights.bold,

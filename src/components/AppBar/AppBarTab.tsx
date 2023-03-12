@@ -33,11 +33,25 @@ const AppBarTab = ({ label, route }: Props) => {
     return (
         <Pressable
             onPress={async () => {
-                if (label.includes('Out')) {
-                    await authStorage.removeAccessToken();
-                    apolloClient.resetStore();
+                switch (label) {
+                    case 'Sign Out':
+                        await authStorage.removeAccessToken();
+                        apolloClient.resetStore();
+                        navigate('/');
+                        break;
+                    case 'Repositories':
+                        navigate('/');
+                        break;
+                    case 'Sign In':
+                        route && navigate(route);
+                        break;
+                    case 'Create a Review':
+                        route && navigate(route);
+                        break;
+                    default:
+                        navigate('/');
+                        break;
                 }
-                navigate(route || '/');
             }}
             style={({ pressed }) => [
                 pressed && nativeStyles.pressedContainer,

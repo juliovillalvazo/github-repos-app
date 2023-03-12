@@ -5,6 +5,7 @@ import AppBar from './AppBar/AppBar';
 import theme from '../theme';
 import SignIn from './SignIn/SignIn';
 import SingleRepository from './Repository/SingleRepository';
+import { CreateReview } from './CreateReview';
 
 const styles = StyleSheet.create({
     container: {
@@ -26,6 +27,7 @@ const Main = () => {
                     path='/repositories/:id'
                     element={<SingleRepository />}
                 />
+                <Route path='/create-review' element={<CreateReview />} />
             </Routes>
         </View>
     );

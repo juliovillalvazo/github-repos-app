@@ -28,7 +28,13 @@ const AppBar = () => {
                 {!data?.me ? (
                     <AppBarTab label='Sign In' route='signIn' />
                 ) : (
-                    <AppBarTab label='Sign Out' />
+                    <>
+                        <AppBarTab
+                            label='Create a Review'
+                            route='create-review'
+                        />
+                        <AppBarTab label='Sign Out' />
+                    </>
                 )}
             </ScrollView>
         </View>

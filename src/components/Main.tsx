@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import { Route, Routes, Navigate } from 'react-router-native';
 import RepositoryList from './Repositories/RepositoryList';
 import AppBar from './AppBar/AppBar';
+import SpacingTop from './UI/SpacingTop';
 import theme from '../theme';
 import SignIn from './SignIn/SignIn';
 import SingleRepository from './Repository/SingleRepository';
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
 const Main = () => {
     return (
         <View style={styles.container}>
-            <AppBar />
+            <SpacingTop />
             <Routes>
                 <Route path='/' element={<RepositoryList />} />
                 <Route path='/signIn' element={<SignIn />} />
@@ -29,6 +30,7 @@ const Main = () => {
                 />
                 <Route path='/create-review' element={<CreateReview />} />
             </Routes>
+            <AppBar />
         </View>
     );
 };

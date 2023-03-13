@@ -14,6 +14,12 @@ const initialValues = {
 };
 
 const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+        height: '100%',
+        backgroundColor: theme.colors.white,
+        padding: '5%',
+    },
     errorContainer: {
         alignItems: 'flex-end',
         justifyContent: 'center',
@@ -39,7 +45,7 @@ const validationSchema = yup.object().shape({
 
 export const SignInContainer = ({ onSubmit, error }: SignInContainerProps) => {
     return (
-        <View testID='SignInContainer'>
+        <View style={styles.container} testID='SignInContainer'>
             <Formik
                 initialValues={initialValues}
                 onSubmit={onSubmit}

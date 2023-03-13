@@ -7,21 +7,60 @@ type FormProps = {
     onSubmit: (values: any) => void;
 };
 
+const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'flex-start',
+        backgroundColor: theme.colors.white,
+    },
+    input: {
+        borderWidth: 1,
+        borderRadius: 8,
+        padding: 15,
+        marginBottom: 30,
+        height: 60,
+    },
+    createButtonContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 60,
+        backgroundColor: theme.colors.primary,
+        borderRadius: 8,
+    },
+    createButton: {
+        color: theme.colors.white,
+        fontSize: theme.fontSizes.subheading,
+        fontWeight: theme.fontWeights.bold,
+    },
+});
+
 export const CreateReviewForm: React.FC<FormProps> = ({ onSubmit }) => {
     return (
-        <View>
+        <View style={styles.container}>
             <FormikTextInput
+                style={styles.input}
                 name='repositoryOwner'
                 placeholder='repository owner'
             />
             <FormikTextInput
+                style={styles.input}
                 name='repositoryName'
                 placeholder='repository name'
             />
-            <FormikTextInput name='rating' placeholder='rating' />
-            <FormikTextInput name='review' placeholder='review' />
+            <FormikTextInput
+                style={styles.input}
+                name='rating'
+                placeholder='rating'
+            />
+            <FormikTextInput
+                style={styles.input}
+                name='review'
+                placeholder='reviews'
+                multiline
+            />
             <Pressable onPress={onSubmit}>
-                <Text>Create a Review</Text>
+                <View style={styles.createButtonContainer}>
+                    <Text style={styles.createButton}>Create a Review</Text>
+                </View>
             </Pressable>
         </View>
     );

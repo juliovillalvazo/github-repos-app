@@ -1,12 +1,21 @@
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { View } from 'react-native';
-import theme from '../../theme';
+import { View, StyleSheet } from 'react-native';
 import { CreateReviewForm } from './CreateReviewForm';
+import useCreateReview from '../../hooks/useCreateReview';
+import { useNavigate } from 'react-router-native';
+import theme from '../../theme';
 
 export interface CreateReviewProps {
     error?: undefined;
     onSubmit: (values: any) => Promise<void>;
+}
+
+interface ReviewFormValues {
+    repositoryOwner: string;
+    repositoryName: string;
+    rating: number;
+    review?: string;
 }
 
 const initialValues = {
@@ -15,6 +24,16 @@ const initialValues = {
     rating: 0,
     review: '',
 };
+
+const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+        // alignItems: 'center',
+        backgroundColor: theme.colors.white,
+        height: '100%',
+        padding: '5%',
+    },
+});
 
 const validationSchema = yup.object().shape({
     repositoryOwner: yup
@@ -35,11 +54,27 @@ const validationSchema = yup.object().shape({
 });
 
 export const CreateReview = () => {
-    const onSubmit = (values: any) => {
-        console.log(values);
+    const [createReview, status] = useCreateReview();
+    const navigate = useNavigate();
+
+    const onSubmit = async (values: ReviewFormValues) => {
+        try {
+            const data = await createReview({
+                ownerName: values.repositoryOwner,
+                repositoryName: values.repositoryName,
+                rating: Number(values.rating),
+                text: values.review,
+            });
+
+            console.log(data);
+            if (data?.createReview.repository.id)
+                navigate(`/repositories/${data.createReview.repository.id}`);
+        } catch (e) {
+            console.log(e);
+        }
     };
     return (
-        <View>
+        <View style={styles.container}>
             <Formik
                 initialValues={initialValues}
                 onSubmit={onSubmit}

@@ -61,3 +61,22 @@ export interface ReviewProps {
         [key: string]: string;
     };
 }
+
+export interface CreateReviewType {
+    ownerName: string;
+    repositoryName: string;
+    rating: number;
+    text?: string | null;
+}
+
+export interface CreateReviewMutation {
+    createReview: {
+        repository: {
+            id: string;
+            ownerName: string;
+            name: string;
+        };
+        rating: number;
+        text?: string | null;
+    };
+}

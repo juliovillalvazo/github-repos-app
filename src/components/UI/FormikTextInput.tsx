@@ -12,6 +12,7 @@ interface Props {
     name: string;
     placeholder?: string;
     secureTextEntry?: boolean;
+    multiline?: boolean;
 }
 
 const styles = StyleSheet.create({

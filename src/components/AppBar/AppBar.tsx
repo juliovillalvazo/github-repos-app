@@ -6,10 +6,14 @@ import { ME } from '../../gql/queries';
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: Constants.statusBarHeight,
-        paddingBottom: 14,
+        paddingTop: 20,
+        paddingBottom: 28,
         paddingLeft: 20,
         backgroundColor: '#24292e',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
     },
     text: {
         color: 'white',
@@ -20,7 +24,7 @@ const styles = StyleSheet.create({
 
 const AppBar = () => {
     const { data } = useQuery(ME);
-    console.log(data);
+
     return (
         <View style={styles.container}>
             <ScrollView horizontal>

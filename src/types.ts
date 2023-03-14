@@ -80,3 +80,15 @@ export interface CreateReviewMutation {
         text?: string | null;
     };
 }
+
+export interface CreateUserInputType {
+    username: string;
+    password: string;
+}
+
+export interface CreatedUserType {
+    createUser: {
+        id: string;
+        username: string;
+    };
+}

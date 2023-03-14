@@ -30,7 +30,10 @@ const AppBar = () => {
             <ScrollView horizontal>
                 <AppBarTab label='Repositories' />
                 {!data?.me ? (
-                    <AppBarTab label='Sign In' route='signIn' />
+                    <>
+                        <AppBarTab label='Sign Up' route='signup' />
+                        <AppBarTab label='Sign In' route='signIn' />
+                    </>
                 ) : (
                     <>
                         <AppBarTab

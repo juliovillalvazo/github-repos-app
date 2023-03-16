@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES } from '../gql/queries';
 
-const useRepositories = (orderBy = 'CREATED_BY', orderDirection = 'DESC') => {
+const useRepositories = (orderBy = 'CREATED_AT', orderDirection = 'DESC') => {
     const { data, error, loading, refetch } = useQuery(GET_REPOSITORIES, {
         variables: {
             orderBy,

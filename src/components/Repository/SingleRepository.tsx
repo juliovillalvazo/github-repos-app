@@ -111,6 +111,7 @@ const SingleRepository = () => {
                 <RepositoryItemContainer data={repository} />
             )}
             ItemSeparatorComponent={ItemSeparator}
+            contentContainerStyle={{ paddingBottom: 100 }}
         />
     );
 };

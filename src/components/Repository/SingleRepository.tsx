@@ -1,11 +1,22 @@
+import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { useParams } from 'react-router-native';
+import { ActivityIndicator } from 'react-native-paper';
 import useSingleRepository from '../../hooks/useSingleRepository';
 import { RepositoryItemContainer } from '../Repositories/RepositoryItem';
 import Text from '../UI/Text';
 import theme from '../../theme';
-import { ReviewProps } from '../../types';
+import {
+    ReviewProps,
+    SingleRepository as SingleRepositoryType,
+} from '../../types';
 import { format } from 'date-fns';
+
+export interface SingleRepositoryProps {
+    loading?: boolean;
+    repository?: SingleRepositoryType;
+    header?: boolean;
+}
 
 const styles = StyleSheet.create({
     separator: {
@@ -54,7 +65,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const ReviewItem = ({
+export const ReviewItem = ({
     review,
 }: { review: ReviewProps } | { review: undefined }) => {
     if (!review) return <></>;
@@ -77,23 +88,24 @@ const ItemSeparator = () => {
     return <View style={styles.separator} />;
 };
 
-const SingleRepository = () => {
-    const { id } = useParams();
-    const { repository, loading, error } = useSingleRepository(id);
-
-    if (!repository || error)
-        return (
-            <View>
-                <Text style={styles.errorText}>
-                    {error ? error.message : 'No repository'}
-                </Text>
-            </View>
-        );
+export const SingleRepositoryContainer: React.FC<SingleRepositoryProps> = ({
+    loading,
+    repository,
+    header,
+}) => {
+    if (!repository) return null;
 
     if (loading) {
         return (
-            <View>
-                <Text>Fetching data...</Text>
+            <View
+                style={{
+                    width: '100%',
+                    padding: '5%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <ActivityIndicator animating={true} size={48} />
             </View>
         );
     }
@@ -107,11 +119,30 @@ const SingleRepository = () => {
             data={reviews}
             renderItem={({ item }) => <ReviewItem review={item} />}
             keyExtractor={({ id }) => id}
-            ListHeaderComponent={() => (
-                <RepositoryItemContainer data={repository} />
-            )}
+            ListHeaderComponent={() => {
+                return (
+                    <>
+                        {header && (
+                            <RepositoryItemContainer data={repository} />
+                        )}
+                    </>
+                );
+            }}
             ItemSeparatorComponent={ItemSeparator}
             contentContainerStyle={{ paddingBottom: 100 }}
+        />
+    );
+};
+
+const SingleRepository = () => {
+    const { id } = useParams();
+    const { repository, loading } = useSingleRepository(id);
+
+    return (
+        <SingleRepositoryContainer
+            loading={loading}
+            repository={repository}
+            header
         />
     );
 };

@@ -10,6 +10,7 @@ import {
     Portal,
     Searchbar,
 } from 'react-native-paper';
+import { useDebounce } from 'use-debounce';
 import { useState } from 'react';
 import theme from '../../theme';
 
@@ -35,6 +36,7 @@ export const RepositoryListContainer = ({
     visible,
     menuLabel,
     closeMenu,
+    loadingSearch,
 }: any) => {
     const repositoryNodes: SingleRepository[] =
         repositories !== undefined
@@ -53,6 +55,7 @@ export const RepositoryListContainer = ({
                         mode='view'
                         style={{ backgroundColor: theme.colors.white }}
                         showDivider={false}
+                        loading={loadingSearch}
                     />
                     <Menu
                         anchor={
@@ -233,11 +236,12 @@ const RepositoryList = () => {
     const [visible, setVisible] = useState(false);
     const [orderBy, setOrderBy] = useState('CREATED_AT');
     const [searchQuery, setSearchQuery] = useState('');
+    const [debouncedQuery] = useDebounce(searchQuery, 500);
     const [orderDirection, setOrderDirection] = useState('DESC');
-    const { repositories } = useRepositories(
+    const { repositories, loading } = useRepositories(
         orderBy,
         orderDirection,
-        searchQuery,
+        debouncedQuery,
     );
 
     const openMenu = () => {
@@ -270,6 +274,7 @@ const RepositoryList = () => {
                 searchValue={searchQuery}
                 onSearch={setSearchQuery}
                 repositories={repositories}
+                loadingSearch={loading}
             />
         </View>
     );

@@ -51,6 +51,9 @@ const AppBarTab = ({ label, route }: Props) => {
                     case 'Sign Up':
                         route && navigate(route);
                         break;
+                    case 'My Reviews':
+                        route && navigate(route);
+                        break;
                     default:
                         navigate('/');
                         break;

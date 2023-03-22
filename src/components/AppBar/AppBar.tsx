@@ -1,5 +1,4 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
-import Constants from 'expo-constants';
 import AppBarTab from './AppBarTab';
 import { useQuery } from '@apollo/client';
 import { ME } from '../../gql/queries';
@@ -40,6 +39,7 @@ const AppBar = () => {
                             label='Create a Review'
                             route='create-review'
                         />
+                        <AppBarTab label='My Reviews' route='my-reviews' />
                         <AppBarTab label='Sign Out' />
                     </>
                 )}

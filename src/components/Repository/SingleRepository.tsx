@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
-import { useParams } from 'react-router-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { useNavigate, useParams } from 'react-router-native';
+import { ActivityIndicator, Button } from 'react-native-paper';
 import useSingleRepository from '../../hooks/useSingleRepository';
 import { RepositoryItemContainer } from '../Repositories/RepositoryItem';
 import Text from '../UI/Text';
@@ -16,6 +16,7 @@ export interface SingleRepositoryProps {
     loading?: boolean;
     repository?: SingleRepositoryType;
     header?: boolean;
+    cta: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -63,23 +64,47 @@ const styles = StyleSheet.create({
         color: theme.colors.textSecondary,
         fontWeight: theme.fontWeights.normal,
     },
+    background: {
+        justifyContent: 'space-between',
+    },
 });
 
 export const ReviewItem = ({
     review,
-}: { review: ReviewProps } | { review: undefined }) => {
+    cta,
+}:
+    | { review: ReviewProps; cta: boolean }
+    | { review: undefined; cta: boolean }) => {
     if (!review) return <></>;
+    const navigate = useNavigate();
+    console.log(review);
     const formattedDate = format(new Date(review.createdAt), 'MM.dd.yyyy');
     return (
-        <View style={styles.reviewContainer}>
-            <View style={[styles.ratingContainer, styles.ratingBorder]}>
-                <Text style={styles.textRating}>{review.rating}</Text>
+        <View>
+            <View style={styles.reviewContainer}>
+                <View style={[styles.ratingContainer, styles.ratingBorder]}>
+                    <Text style={styles.textRating}>{review.rating}</Text>
+                </View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.author}>{review.user.username}</Text>
+                    <Text style={styles.date}>{formattedDate}</Text>
+                    <Text style={styles.description}>{review.text}</Text>
+                </View>
             </View>
-            <View style={styles.textContainer}>
-                <Text style={styles.author}>{review.user.username}</Text>
-                <Text style={styles.date}>{formattedDate}</Text>
-                <Text style={styles.description}>{review.text}</Text>
-            </View>
+            {cta && (
+                <View style={[styles.reviewContainer, styles.background]}>
+                    <Button
+                        onPress={() => navigate(`/repositories/${review.id}`)}
+                    >
+                        View repository
+                    </Button>
+                    <Button
+                        onPress={() => navigate(`/repositories/${review.id}`)}
+                    >
+                        Delete review
+                    </Button>
+                </View>
+            )}
         </View>
     );
 };
@@ -92,6 +117,7 @@ export const SingleRepositoryContainer: React.FC<SingleRepositoryProps> = ({
     loading,
     repository,
     header,
+    cta,
 }) => {
     if (!repository) return null;
 
@@ -117,7 +143,7 @@ export const SingleRepositoryContainer: React.FC<SingleRepositoryProps> = ({
     return (
         <FlatList
             data={reviews}
-            renderItem={({ item }) => <ReviewItem review={item} />}
+            renderItem={({ item }) => <ReviewItem cta={cta} review={item} />}
             keyExtractor={({ id }) => id}
             ListHeaderComponent={() => {
                 return (
@@ -140,6 +166,7 @@ const SingleRepository = () => {
 
     return (
         <SingleRepositoryContainer
+            cta={false}
             loading={loading}
             repository={repository}
             header

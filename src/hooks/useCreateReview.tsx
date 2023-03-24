@@ -14,7 +14,6 @@ const useCreateReview = (): [
         values: CreateReviewType,
     ) => Promise<CreateReviewMutation | null | undefined> = async (values) => {
         try {
-            console.log(values);
             const { data } = await mutate({
                 variables: {
                     review: values,

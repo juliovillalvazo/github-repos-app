@@ -66,7 +66,6 @@ export const CreateReview = () => {
                 text: values.review,
             });
 
-            console.log(data);
             if (data?.createReview.repository.id)
                 navigate(`/repositories/${data.createReview.repository.id}`);
         } catch (e) {

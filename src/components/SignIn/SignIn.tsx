@@ -70,8 +70,6 @@ const SignIn = () => {
         try {
             const token = await signIn(values);
 
-            console.log(token);
-
             if (token) {
                 navigate('/');
             }

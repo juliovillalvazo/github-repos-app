@@ -56,7 +56,6 @@ export const SignUp = () => {
     const [signUp, status] = useSignUp();
     const navigate = useNavigate();
     const onSubmit = async (values: CreateUserInputType) => {
-        console.log(values);
         try {
             const data = await signUp({
                 username: values.username,
@@ -64,7 +63,6 @@ export const SignUp = () => {
             });
 
             if (data) {
-                console.log(data.createUser);
                 navigate('/signIn');
             }
         } catch (e) {

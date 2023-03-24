@@ -77,7 +77,7 @@ export const ReviewItem = ({
     | { review: undefined; cta: boolean }) => {
     if (!review) return <></>;
     const navigate = useNavigate();
-    console.log(review);
+
     const formattedDate = format(new Date(review.createdAt), 'MM.dd.yyyy');
     return (
         <View>

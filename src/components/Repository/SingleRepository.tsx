@@ -17,6 +17,7 @@ export interface SingleRepositoryProps {
     repository?: SingleRepositoryType;
     header?: boolean;
     cta: boolean;
+    onDelete?: (id: string) => Promise<string>;
 }
 
 const styles = StyleSheet.create({
@@ -65,16 +66,37 @@ const styles = StyleSheet.create({
         fontWeight: theme.fontWeights.normal,
     },
     background: {
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
+    },
+    buttonRepository: {
+        backgroundColor: theme.colors.primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 8,
+        height: 48,
+        width: '100%',
+    },
+    buttonDelete: {
+        backgroundColor: theme.colors.red,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 8,
+        height: 48,
+        width: '100%',
     },
 });
 
 export const ReviewItem = ({
     review,
     cta,
+    onDelete,
 }:
-    | { review: ReviewProps; cta: boolean }
-    | { review: undefined; cta: boolean }) => {
+    | {
+          review: ReviewProps;
+          cta: boolean;
+          onDelete: ((id: string) => Promise<string>) | undefined;
+      }
+    | { review: undefined; cta: boolean; onDelete: undefined }) => {
     if (!review) return <></>;
     const navigate = useNavigate();
 
@@ -94,12 +116,20 @@ export const ReviewItem = ({
             {cta && (
                 <View style={[styles.reviewContainer, styles.background]}>
                     <Button
-                        onPress={() => navigate(`/repositories/${review.id}`)}
+                        style={styles.buttonRepository}
+                        onPress={() =>
+                            navigate(`/repositories/${review.repository.id}`)
+                        }
+                        textColor={theme.colors.white}
                     >
                         View repository
                     </Button>
                     <Button
-                        onPress={() => navigate(`/repositories/${review.id}`)}
+                        style={styles.buttonDelete}
+                        textColor={theme.colors.white}
+                        onPress={
+                            onDelete ? () => onDelete(review.id) : () => null
+                        }
                     >
                         Delete review
                     </Button>
@@ -118,6 +148,7 @@ export const SingleRepositoryContainer: React.FC<SingleRepositoryProps> = ({
     repository,
     header,
     cta,
+    onDelete,
 }) => {
     if (!repository) return null;
 
@@ -143,7 +174,9 @@ export const SingleRepositoryContainer: React.FC<SingleRepositoryProps> = ({
     return (
         <FlatList
             data={reviews}
-            renderItem={({ item }) => <ReviewItem cta={cta} review={item} />}
+            renderItem={({ item }) => (
+                <ReviewItem onDelete={onDelete} cta={cta} review={item} />
+            )}
             keyExtractor={({ id }) => id}
             ListHeaderComponent={() => {
                 return (
@@ -163,6 +196,13 @@ export const SingleRepositoryContainer: React.FC<SingleRepositoryProps> = ({
 const SingleRepository = () => {
     const { id } = useParams();
     const { repository, loading } = useSingleRepository(id);
+
+    if (!repository)
+        return (
+            <View>
+                <Text>404 Repo not found!!</Text>
+            </View>
+        );
 
     return (
         <SingleRepositoryContainer

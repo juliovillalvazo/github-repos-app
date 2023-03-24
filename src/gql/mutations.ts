@@ -30,3 +30,8 @@ export const CREATE_USER = gql`
         }
     }
 `;
+
+export const DELETE_REVIEW = gql`
+mutation DELETE_REVIEW($id: ID!){
+    deleteReview(id: $id)
+}`;

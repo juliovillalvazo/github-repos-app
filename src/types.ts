@@ -53,6 +53,7 @@ export interface SignInContainerProps {
 }
 
 export interface ReviewProps {
+    repository: any;
     createdAt: Date;
     id: string;
     rating: number;

@@ -27,6 +27,26 @@ export const REVIEW_FIELDS = gql`
                 username
                 }
             }
+            
         }
     }
 `;
+
+export const REVIEW_FIELDS_ME = gql`
+fragment ReviewFieldsME on ReviewConnection {
+    edges {
+        node {
+            id
+            text
+            rating
+            createdAt
+            user {
+                id
+                username
+            }
+            repository {
+                id
+            }
+        }
+    }
+}`;

@@ -3,13 +3,29 @@ import { View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { useQuery } from '@apollo/client';
 import { ME } from '../../gql/queries';
+import { useDeleteReview } from '../../hooks/useDeleteReview';
 
 export const RepositoryListProfile = () => {
-    const { data, loading } = useQuery(ME, {
+    const { data, loading, refetch } = useQuery(ME, {
         variables: {
             seeReviews: true,
         },
     });
+
+    const [deleteReview, result] = useDeleteReview();
+
+    const handleDelete = async (id: string) => {
+        deleteReview(id);
+
+        if (result.error) {
+            throw new Error('Could not delete this review');
+        }
+
+        refetch({
+            seeReviews: true,
+        });
+        return 'Ok';
+    };
 
     if (loading) {
         return (
@@ -26,5 +42,11 @@ export const RepositoryListProfile = () => {
         );
     }
 
-    return <SingleRepositoryContainer cta repository={data.me} />;
+    return (
+        <SingleRepositoryContainer
+            onDelete={handleDelete}
+            cta
+            repository={data.me}
+        />
+    );
 };

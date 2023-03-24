@@ -37,6 +37,7 @@ export const RepositoryListContainer = ({
     menuLabel,
     closeMenu,
     loadingSearch,
+    onEndReach,
 }: any) => {
     const repositoryNodes: SingleRepository[] =
         repositories !== undefined
@@ -46,6 +47,7 @@ export const RepositoryListContainer = ({
     return (
         <FlatList
             data={repositoryNodes}
+            onEndReached={onEndReach}
             ListHeaderComponent={
                 <>
                     <Searchbar
@@ -238,7 +240,7 @@ const RepositoryList = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [debouncedQuery] = useDebounce(searchQuery, 500);
     const [orderDirection, setOrderDirection] = useState('DESC');
-    const { repositories, loading } = useRepositories(
+    const { repositories, loading, fetchMore } = useRepositories(
         orderBy,
         orderDirection,
         debouncedQuery,
@@ -262,6 +264,10 @@ const RepositoryList = () => {
         }
     };
 
+    const onEndReach = () => {
+        fetchMore();
+    };
+
     return (
         <View style={{ height: '100%', width: '100%' }}>
             <RepositoryListContainer
@@ -275,6 +281,7 @@ const RepositoryList = () => {
                 onSearch={setSearchQuery}
                 repositories={repositories}
                 loadingSearch={loading}
+                onEndReach={onEndReach}
             />
         </View>
     );

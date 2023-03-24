@@ -5,18 +5,46 @@ const useRepositories = (
     orderBy = 'CREATED_AT',
     orderDirection = 'DESC',
     searchKeyword = '',
+    first = 5,
+    after = '',
 ) => {
-    const { data, error, loading, refetch } = useQuery(GET_REPOSITORIES, {
-        variables: {
-            orderBy,
-            orderDirection,
-            searchKeyword,
+    const { data, error, loading, fetchMore, refetch } = useQuery(
+        GET_REPOSITORIES,
+        {
+            variables: {
+                orderBy,
+                orderDirection,
+                searchKeyword,
+                first,
+                after,
+            },
+            fetchPolicy: 'cache-and-network',
         },
-        fetchPolicy: 'cache-and-network',
-    });
+    );
+
+    const handleFetchMore = () => {
+        const canFetchMore =
+            !loading && data?.repositories.pageInfo.hasNextPage;
+
+        if (!canFetchMore) return;
+
+        fetchMore({
+            variables: {
+                after: data.repositories.pageInfo.endCursor,
+                variables: {
+                    orderBy,
+                    orderDirection,
+                    searchKeyword,
+                    first,
+                    after,
+                },
+            },
+        });
+    };
 
     return {
         repositories: data?.repositories,
+        fetchMore: handleFetchMore,
         loading,
         refetch,
         error,

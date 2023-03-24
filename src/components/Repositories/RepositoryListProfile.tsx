@@ -4,6 +4,7 @@ import { ActivityIndicator } from 'react-native-paper';
 import { useQuery } from '@apollo/client';
 import { ME } from '../../gql/queries';
 import { useDeleteReview } from '../../hooks/useDeleteReview';
+import { useEffect } from 'react';
 
 export const RepositoryListProfile = () => {
     const { data, loading, refetch } = useQuery(ME, {
@@ -11,6 +12,10 @@ export const RepositoryListProfile = () => {
             seeReviews: true,
         },
     });
+
+    useEffect(() => {
+        refetch({ seeReviews: true });
+    }, []);
 
     const [deleteReview, result] = useDeleteReview();
 

@@ -40,8 +40,8 @@ ${REVIEW_FIELDS_ME}
 `;
 
 export const GET_REPOSITORY = gql`
-    query GetRepository($id: ID!) {
-        repository(id: $id) {
+    query GetRepository($id: ID!, first: Int, after: String) {
+        repository(id: $id, first: $first, after: $after) {
             ownerName
             name
             createdAt

@@ -5,7 +5,7 @@ const useRepositories = (
     orderBy = 'CREATED_AT',
     orderDirection = 'DESC',
     searchKeyword = '',
-    first = 5,
+    first = 3,
     after = '',
 ) => {
     const { data, error, loading, fetchMore, refetch } = useQuery(
@@ -31,13 +31,10 @@ const useRepositories = (
         fetchMore({
             variables: {
                 after: data.repositories.pageInfo.endCursor,
-                variables: {
-                    orderBy,
-                    orderDirection,
-                    searchKeyword,
-                    first,
-                    after,
-                },
+                orderBy,
+                orderDirection,
+                searchKeyword,
+                first,
             },
         });
     };
